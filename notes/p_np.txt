@@ -1,0 +1,216 @@
+SAT
+---------------
+- https://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem
+- https://en.wikipedia.org/wiki/Boolean_satisfiability_problem
+- hard combinatorial problems can be reduced to SAT
+- SAT can be reduced to 3-SAT
+	- recall 3-SAT is a restriction on SAT to have all clauses have exactly 3 terms
+
+
+Benchmarks
+----------------
+- http://www.cs.ubc.ca/~hoos/SATLIB/benchm.html
+- http://www.qbflib.org/
+
+
+SAT solvers
+--------------
+- https://www.quora.com/What-kind-of-algorithms-do-SAT-solvers-use
+- Empirical Study of the Anatomy of Modern SatSolvers http://www.cs.toronto.edu/~fbacchus/csc2512/Lectures/2013Readings/Skallah_Empirical_Study_SAT_Solvers.pdf
+- https://www.msoos.org/2016/03/memory-layout-of-clauses-in-minisat/
+- http://fmv.jku.at/lingeling/
+- https://www.aaai.org/Papers/JAIR/Vol32/JAIR-3214.pdf - SATzilla: Portfolio-based Algorithm Selection for SAT
+
+
+####################################################################################
+QSAT/QBF
+--------------
+- https://en.wikipedia.org/wiki/True_quantified_Boolean_formula
+	- generalization of SAT, each term has a quantifier.
+
+####################################################################################
+TSP
+--------------
+- visit all nodes and return minimally
+- O(n!), dynamic programming O(n^2 * 2^n)
+- compare to MST. MST just needs to connect all vertices. TSP needs a route.
+
+Heuristic Solutions
+--------------
+- there exists polynomial time algorithsm that are at most 2x of optimal route.
+
+
+TSP solvers
+--------------
+- https://developers.google.com/optimization/routing/tsp#solving-tsps-with-or-tools
+
+
+
+
+
+####################################################################################
+Hamiltonian Cycle
+-------------------
+- path that visits each vertex exactly once
+- compare to Eulerian cycle (visit every edge exactly once)
+	- eulerian easy to check - degree of each vertex is even and connected
+- graphs that hve hamiltonian cycles do not necessarily have eulerian cycles
+
+
+
+####################################################################################
+Longest path problem
+------------------
+- find a simple path from s to t that is at least b - longest path
+- find a simple path from s to t that is at most b - shortest path
+
+
+
+
+
+####################################################################################
+Integer Linear Programming
+------------------
+- https://en.wikipedia.org/wiki/Integer_programming
+- linear inequalities, require solution/variables to be integer values.
+
+Solvers
+---------
+- https://developers.google.com/optimization/lp/glop
+
+
+Reductions To ILP
+---------
+1. TSP
+2. Vertex Cover
+3. Set Packing
+4. Boolean satisfiability
+
+In practice
+-------------
+- Simplex
+- ellipsoid
+
+
+
+####################################################################################
+Independent Set Problem
+-------------------
+- given a graph and budget b, select subsets of the graph where each subset is at least size b, and each subset is not connected to any other nodes in a different subset
+
+
+####################################################################################
+vertex cover
+-------------------
+- find subset that touches all edges in the graph.
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Reductions
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+a reduction is an algorithm for transforming one problem into another problem. A reduction from one problem to another may be used to show that the second problem is at least as difficult as the first.
+(the target problem might be harder than the source problem)
+--------------------
+NP-complete - if all other search problems reduce to it.
+-------------------
+
+
+Example Reduction
+---------------------------
+all problems -> SAT (np complete) -> 3-SAT -> independent set -> vertex cover
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+independent set -> vertex cover
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+I is an independent set of G(V,E) iff V-I is a vertex cover of G.
+- Proof
+	- (independent set -> vertex cover) if I is an independent set then there is no edge with both endpoints in I, hence V-I touches every edge.
+	- (vertex cover -> independent set) If V-I touches every edge, then each edge has at least one endpoint in V-I. Hence I 
+	is an independent set.
+- Reduction steps
+	to check if G(V,E) has an independent set of size at least b, we check to see if G has a vertex cover of size at least |V| - b
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3-SAT to independent set
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+High-level
+------------
+Alternative formulation of 3-SAT
+- each clause's term is a vertex/node, there are edges in between each of the terms
+- select a literal from each clause such that the set of selected literals is consistent (does not contain a literal l together with its negation l_not)
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+SAT to 3-SAT
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- get rid of all clauses with more than 3 literals
+- Steps:
+1. (l1 V l2 V A) (A is "the rest")
+2. introduce additional clause (y is fresh variable) - reduce by 1 term every step
+	(l1 V l2 V y), (not_y V A)
+
+Polynomial time proof for the reduction
+--------------
+O(at most number of literals)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Circuit SAT to SAT
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Circuit
+---------
+DAG with in-degree of at most 2. legal operations are not, or, and and.
+
+To change circuit to SAT
+---------------------
+- change to CNF form
+- introduce variable per gate
+- have mappings for each of or, not, and and gates to CNF form.
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+All of NP to Circuit SAT
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- Reduce all search problems to circuit SAT
+- A "search problem" is defined to be a problem where solutions are verifiable in polynomial time in proportion to length of the problem
+- Intuition
+	Encode the problem and solution into bits to pass into a circuit SAT. It only outputs 1 if the solution solves the problem...
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Sudoku to SAT
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Representation
+------------
+- 9 x 9 x 9 boolean variables. (horizontal x vertical x value)
+	1 if cell in (i,j) == k
+- constraints
+	- Cell [i,j] contains exactly one digit
+	- k appears exactly once in row i
+	- k appears exactly once in column j
+	- k appears exactly once in a 3x3 block
+- resulting formula has size 2^729 ~ 10^220, but SAT solvers can find a satisfying solution ~1 sec.
+
+
+http://sed.free.fr/complex/sudoku.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

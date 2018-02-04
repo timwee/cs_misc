@@ -1,0 +1,44 @@
+Classifying problems
+-----------------
+1. special cases
+2. approximation algorithms
+3. Exact algorithms
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Special Cases
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------
+2-SAT
+----------------
+- build implication graph
+	1. for each term x in the clauses, introduce 2 nodes, x and not_x
+	2. for each 2 clause (l1 || l2), introduce directed edges !l1 -> l2, !l2 -> l1
+	3. find values so that there is no edge that goes from 1 to 0.
+- implication is x => y
+
+
+Implication graph
+-------------------
+- skew symmetric
+	- l1 -> l2 => !l2 -> !l1
+	- generalizes to paths (path from l1 -> l2, means !l2 -> !l1)
+- 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Strategies
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Branch and Bound
+---------------
+- https://en.wikipedia.org/wiki/Branch_and_bound
+- http://www.geeksforgeeks.org/branch-and-bound-set-2-implementation-of-01-knapsack/
+- https://rjlipton.wordpress.com/2012/12/19/branch-and-bound-why-does-it-work/
+- http://stanford.edu/class/ee364b/lectures/bb_slides.pdf stephen boyd
+- Typical problems applied to discrete programming problems like:
+	- knapsack
+		1. Compute bound using greedy approach. Sort items in decreasing order in terms of value/weight ratio
+		2. Queue for exploring. Only add nodes if their bound is > maxprofit so far.
+
+- For TSP
+	- 

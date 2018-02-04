@@ -1,0 +1,27 @@
+Theory
+---------------
+We have no known algorithm checking the satisfiability of CNF formula F with n variables in time:
+poly(|F|) * 1.99^(n)
+
+
+SAT solvers
+-------------
+- can solve problems with thousands or even millions of variables in one second.
+
+
+
+
+
+
+####################################################################################
+
+
+
+
+
+
+
+
+
+
+
